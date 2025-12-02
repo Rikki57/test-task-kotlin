@@ -20,9 +20,6 @@ class PlayerController(
     @PostMapping
     @Operation(summary = "Create a new player profile")
     fun createPlayer(@RequestBody request: CreatePlayerRequest): ResponseEntity<PlayerResponse> {
-        // ПЛОХО: Нет валидации входных данных
-        // ПЛОХО: Нет проверки прав доступа
-        // ПЛОХО: Возвращаем пароль в ответе
         val player = playerService.createPlayer(request)
         return ResponseEntity.status(HttpStatus.CREATED).body(player)
     }
@@ -30,9 +27,6 @@ class PlayerController(
     @GetMapping("/{id}")
     @Operation(summary = "Get player profile by ID")
     fun getPlayer(@PathVariable id: Long): ResponseEntity<PlayerResponse> {
-        // ПЛОХО: Нет проверки прав доступа
-        // ПЛОХО: Возвращаем пароль в ответе
-        // ПЛОХО: Нет валидации ID
         val player = playerService.getPlayer(id)
         return ResponseEntity.ok(player)
     }
@@ -40,9 +34,6 @@ class PlayerController(
     @GetMapping
     @Operation(summary = "Get all players")
     fun getAllPlayers(): ResponseEntity<List<PlayerResponse>> {
-        // ПЛОХО: Нет пагинации
-        // ПЛОХО: Нет проверки прав доступа
-        // ПЛОХО: Возвращаем пароли всех игроков!
         val players = playerService.getAllPlayers()
         return ResponseEntity.ok(players)
     }
@@ -53,9 +44,6 @@ class PlayerController(
         @PathVariable id: Long,
         @RequestBody request: UpdatePlayerRequest
     ): ResponseEntity<PlayerResponse> {
-        // ПЛОХО: Нет проверки прав доступа
-        // ПЛОХО: Нет валидации входных данных
-        // ПЛОХО: Можно изменить баланс без проверки
         val player = playerService.updatePlayer(id, request)
         return ResponseEntity.ok(player)
     }
@@ -63,9 +51,6 @@ class PlayerController(
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete player profile")
     fun deletePlayer(@PathVariable id: Long): ResponseEntity<Void> {
-        // ПЛОХО: Нет проверки прав доступа
-        // ПЛОХО: Нет валидации ID
-        // ПЛОХО: Мягкое удаление отсутствует
         playerService.deletePlayer(id)
         return ResponseEntity.noContent().build()
     }
@@ -74,10 +59,6 @@ class PlayerController(
     @GetMapping("/login/{login}")
     @Operation(summary = "Get player by login")
     fun getPlayerByLogin(@PathVariable login: String): ResponseEntity<PlayerResponse> {
-        // ПЛОХО: SQL injection уязвимость через логин
-        // ПЛОХО: Нет проверки прав доступа
-        // ПЛОХО: Возвращаем пароль
-        // ПЛОХО: Нет валидации логина
         // TODO: Реализовать поиск по логину
         return ResponseEntity.notFound().build()
     }
